@@ -1,3 +1,6 @@
+import 'package:bluetoth_chess/chess_board.dart';
+import 'package:flame/game.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -64,8 +67,12 @@ class ChessBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsFlutterBinding.ensureInitialized();
+
+    Chess game = Chess();
     return Scaffold(
       appBar: AppBar(),
+      body: GameWidget(game: kDebugMode ? Chess() : game),
     );
   }
 }
