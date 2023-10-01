@@ -10,11 +10,14 @@ class Chess extends FlameGame {
   late final CameraComponent cam;
   final wor = Level();
   @override
-  FutureOr<void> onLoad() {
+  FutureOr<void> onLoad() async {
+    //load all images into cache
+    await images.loadAllImages();
     cam = CameraComponent.withFixedResolution(
         world: wor, width: 512, height: 512);
     cam.viewfinder.anchor = Anchor.topLeft;
     addAll([cam, wor]);
+
     return super.onLoad();
   }
 }

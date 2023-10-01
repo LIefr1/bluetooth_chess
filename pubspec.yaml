@@ -65,8 +65,8 @@ flutter:
     [
       assets/tiles/,
       assets/pixel chess_v1.2/boards/,
-      assets/pixel chess_v1.2/16x32 pieces/BlackPieces-Sheet.png,
-      assets/pixel chess_v1.2/16x32 pieces/WhitePieces-Sheet.png
+      assets/pixel chess_v1.2/16x32 pieces/,
+      
     ] 
 
 
