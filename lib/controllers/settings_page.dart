@@ -9,8 +9,7 @@ class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      body: Stack(
         children: [
           GetBuilder<BluetoothConroller>(
               init: BluetoothConroller(),
@@ -34,7 +33,9 @@ class Settings extends StatelessWidget {
                       StreamBuilder<List<ScanResult>>(
                           stream: controller.scanResults,
                           builder: (context, snapshot) {
+                            print(snapshot.hasData);
                             if (snapshot.hasData) {
+                              print(snapshot.data!.length);
                               return ListView.builder(
                                   shrinkWrap: true,
                                   itemCount: snapshot.data!.length,
@@ -52,7 +53,9 @@ class Settings extends StatelessWidget {
                                   });
                             } else {
                               return const Center(
-                                  child: Text("No devices found"));
+                                  child: Card(
+                                      elevation: 2,
+                                      child: Text("No devices found")));
                             }
                           })
                     ],
