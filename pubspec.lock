@@ -82,10 +82,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_blue_plus
-      sha256: c86512e6efe27d7c3458d69c32ce7c59af6c11d9d92116cf80d9d2635d60a1f7
+      sha256: "025ee30d19f0bf89748a8e56c2f3932ec9f19badc6a18f8286a9f7fec8162d1b"
       url: "https://pub.dev"
     source: hosted
-    version: "1.16.10"
+    version: "1.25.1"
   flutter_chess_board:
     dependency: "direct main"
     description:
