@@ -42,19 +42,25 @@ class BluetoothController extends GetxController {
   }
 
   Future<void> sendData(List<int> data) async {
-    if (connectedDevice != null && characteristic != null) {
-      await characteristic!.write(data, withoutResponse: true);
-    }
+    _checkObjectIsNotNull(connectedDevice);
+    _checkObjectIsNotNull(characteristic);
+
+    await characteristic!.write(data, withoutResponse: true);
   }
 
   Future<List<int>> reciveData() async {
-    if (connectedDevice != null && characteristic != null) {
-      var data = await characteristic!.read();
-      print(data);
-      return data;
-    } else {
-      return List.empty();
-    }
+    _checkObjectIsNotNull(connectedDevice);
+    _checkObjectIsNotNull(characteristic);
+
+     var data = await characteristic!.read();
+
+     return data;
+  }
+  
+  void _checkObjectIsNotNull(Object object) {
+  	if (object == null) {
+	   throw NullReferenceExcption("Объект является null");
+	  }
   }
 
   Stream<List<ScanResult>> get scanResults => FlutterBluePlus.scanResults;
