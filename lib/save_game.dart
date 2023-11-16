@@ -12,54 +12,77 @@ class SavedGame {
       {required this.isOnline, required this.deviceMac, required this.moves});
 }
 
-class SaveGame {
-  final _separator = Platform.pathSeparator;
+class GameDataHeandler {
+   final _separator = Platform.pathSeparator;
+   // Можно сделать конструктор singleton, но это по вкусу.
+
+   // Эту функцию можно вызывать в конструкторе класса и результат записывать в приватное поле класса. 
   _getPath() async {
     final dir = await getApplicationDocumentsDirectory();
     return dir.path;
+  }
+  
+  bool _checkFileExist(File file) {
+    return file.exist()
+	    ? true
+	    : false;
   }
 
   _createFile() async {
     var path = await _getPath();
     var file = File('$path${_separator}data.json');
-    if (await file.exists()) {
-      return file;
-    } else {
-      await file.create();
-      return file;
-    }
+
+    return _checkFileExist(file)
+	    ? file
+	    : file.create();
   }
 
-  saveGame(
-      {String fen = "", bool isOnline = false, String deviceMac = ""}) async {
-    try {
-      File file = await _createFile();
-      var data = {"inOnline": isOnline, "fen": fen, "deviceMac": deviceMac};
-      print(jsonEncode(data));
-      await file.writeAsString(jsonEncode(data));
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
+  saveGame(SavedGame data) async {
+    var file = File('${await _getPath()}${_separator}data.json');
+
+    
+    if (!_checkFileExist(file)) {
+	    file.create();
+    }
+
+    var data = {"inOnline": isOnline, "fen": fen, "deviceMac": deviceMac};
+    
+    try{
+    	await file.writeAsString(jsonEncode(data));
+    }
+    on FileSystemException catch (ex) {
+    	// Можно сделать логирование.
+	    throw ex; // Прокидываем ошибку вызывающему коду.
     }
   }
 
   loadGame() async {
-    try {
-      File file = File('${await _getPath()}${_separator}data.json');
-      if (file.existsSync()) {}
+    File file = File('${await _getPath()}${_separator}data.json');
+    
+    if (_checkFileExist()) {
+	    throw FileSystemException("Файла не существует");
+    }
 
+    try {
       var contents = await file.readAsString();
-      print(contents.isEmpty);
       var data = json.decode(contents);
+
       return SavedGame(
           deviceMac: data['deviceMac'],
           isOnline: data['isOnline'],
           moves: data['fen']);
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
+    } 
+    on JsonCyclicError catch(ex) {
+    	// Можно сделать логирование.
+	    throw ex; // Прокидываем ошибку вызывающему коду.
+    }
+    on JsonUnsupportedOnjectError catch (ex) {
+    	// Можно сделать логирование.
+	    throw ex; // Прокидываем ошибку вызывающему коду.
+    }
+    on FileSystemException catch (ex) {
+    	// Можно сделать логирование.
+	    throw ex; // Прокидываем ошибку вызывающему коду.
     }
   }
 }
